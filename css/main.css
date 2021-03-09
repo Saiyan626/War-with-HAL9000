@@ -3,8 +3,19 @@ html, * {
   }
   
   html, body {
-    height: 100%;
-  }
+      background-image: url("https://cdn.mos.cms.futurecdn.net/HQ9MDkjTJTQvrLfteqXdBP-1200-80.png");
+      background-repeat: no-repeat, repeat;
+      background-position: 50% 20%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      margin: auto 0;
+      height: 100%;
+      color: white;
+      text-shadow: -2px 0 red, 0 2px red, 2px 0 black, 0 -2px black;
+      font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
   
   .card-container {
     display: flex;
@@ -13,6 +24,11 @@ html, * {
     border: 4px dotted grey;
   }
   
+.CPU, .USER1 {
+    width: 100px;
+    height: 150px;
+}
+
   button {
     display: block;
     margin: 10px auto;
@@ -27,5 +43,9 @@ html, * {
   button:hover {
     background-color: grey;
     color: white;
+  }
+
+  .RULES {
+      margin: 5px;
   }
   
