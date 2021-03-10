@@ -8,41 +8,57 @@ const suits = ['s', 'c', 'd', 'h'];
 const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A'];
 
 const masterDeck = buildMasterDeck();
-renderDeckInContainer(masterDeck, document.getElementById('master-deck-container'));
-
-const players = {
-    player1 = {
-        cardsInDeck: 26,
-        cardDrawn: 0 
-    },
-    computer = {
-        cardsInDeck: 26,
-        cardDrawn: 0
-    }
-};
-const points = "";
 
 /*----- app's state (variables) -----*/
-const cards, players, points;
 
+let player1Deck;
+let cpuDeck;
 let shuffledDeck;
 
 /*----- cached element references -----*/
 
-
+const playerDeckEl = document.querySelector(".Player1-stats")
+const cpuDeckEl = document.querySelector(".HAL9000-stats")
 
 /*----- event listeners -----*/
 //draw button to draw cards from both players for values to be compared.
-document.querySelector("button")
-.addEventListener("click, renderShuffledDeck");
+// document.querySelector("button")
+// .addEventListener("click,");
 
-document.querySelector("button")
-.addEventListener("click, ");
+// document.querySelector("button")
+// .addEventListener("click, ");
 /*----- functions -----*/
 
-init();
- {
+function init() {  
+  shuffledDeck = renderShuffledDeck()
+  player1Deck = shuffledDeck.splice(0, 26)
+  cpuDeck = shuffledDeck
+  render()
+}
 
+init();
+
+function render() {
+  let playerFaceUp = player1Deck[0];
+  let cpuFaceUp = cpuDeck[0]; 
+  playerDeckEl.innerHTML = `<div class ="card ${playerFaceUp.face}"></div>`
+  cpuDeckEl.innerHTML = `<div class ="card ${cpuFaceUp.face}"></div>`
+  console.log(player1Deck)
+  console.log(cpuDeck)
+}
+
+function cardDraw() {
+  let playerCard = player1Deck.shift()
+  let cpuCard = cpuDeck.shift()
+  if (playerCard.value > cpuCard.value) {
+    player1Deck.push(playerCard, cpuCard) 
+  } else if (playerCard.value < cpuCard.value) {
+    cpuDeck.push(playerCard, cpuCard)
+  } else {
+    player1Deck.push(playerCard)
+    cpuDeck.push(cpuCard)
+  }
+  render()
 }
 
 function renderShuffledDeck() {
@@ -55,14 +71,21 @@ function renderShuffledDeck() {
       // Note the [0] after splice - this is because splice always returns an array and we just want the card object in that array
       shuffledDeck.push(tempDeck.splice(rndIdx, 1)[0]);
     }
-    renderDeckInContainer(shuffledDeck, shuffledContainer);
+    return shuffledDeck;
   }
 
-
-  //what happens when players draw face cards
-  if(isFaceCard(card1) && isFaceCard(card2)) {
-      playerValue = getFaceCardValue(card1);
-      cpuValue = getFaceCardValue(card2);
-      if (cpuValue > playerValue) {cpuScore++;}
-    else if (playerValue > cpuValue) {playerScore++;}
+  function buildMasterDeck() {
+    const deck = [];
+    // Use nested forEach to generate card objects
+    suits.forEach(function(suit) {
+      ranks.forEach(function(rank) {
+        deck.push({
+          // The 'face' property maps to the library's CSS classes for cards
+          face: `${suit}${rank}`,
+          // Setting the 'value' property for game of blackjack, not war
+          value: Number(rank) || (rank === 'A' ? 11 : 10)
+        });
+      });
+    });
+    return deck;
   }
