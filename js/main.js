@@ -1,50 +1,51 @@
-//CPUDeck = Reset button = Shuffles deck in half to start game
-//PlayerDeck = Draw button = Draws card from each players deck
-//DRAW = Player w/ > cardValue = +2cards else -1cards 
-//DrawTieWin = +6 else -3
-
 /*----- constants -----*/
+
 const suits = ['s', 'c', 'd', 'h'];
 const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A'];
 
-const masterDeck = buildMasterDeck();
+const masterDeck = buildMainDeck();
 
 /*----- app's state (variables) -----*/
 
 let player1Deck;
 let cpuDeck;
 let shuffledDeck;
+let winner;
 
 /*----- cached element references -----*/
 
 const playerDeckEl = document.querySelector(".Player1-stats")
 const cpuDeckEl = document.querySelector(".HAL9000-stats")
+const msgEl = document.querySelector("#msg")
 
 /*----- event listeners -----*/
-//draw button to draw cards from both players for values to be compared.
-// document.querySelector("button")
-// .addEventListener("click,");
 
-// document.querySelector("button")
-// .addEventListener("click, ");
+document.querySelector(".USER1").addEventListener("click",cardDraw)
+
+
 /*----- functions -----*/
 
 function init() {  
   shuffledDeck = renderShuffledDeck()
   player1Deck = shuffledDeck.splice(0, 26)
   cpuDeck = shuffledDeck
+  msgEl.textContent = ""
   render()
 }
 
 init();
 
 function render() {
+  if (winner) {
+   return msgEl.textContent = "USER1-WINS"
+  } else if (winner === false){ 
+   return msgEl.textContent = "HAL9000-WINS"
+  }
+  
   let playerFaceUp = player1Deck[0];
   let cpuFaceUp = cpuDeck[0]; 
   playerDeckEl.innerHTML = `<div class ="card ${playerFaceUp.face}"></div>`
   cpuDeckEl.innerHTML = `<div class ="card ${cpuFaceUp.face}"></div>`
-  console.log(player1Deck)
-  console.log(cpuDeck)
 }
 
 function cardDraw() {
@@ -57,8 +58,18 @@ function cardDraw() {
   } else {
     player1Deck.push(playerCard)
     cpuDeck.push(cpuCard)
-  }
+  } 
+  winner = checkWinner()
   render()
+}
+
+function checkWinner() {
+  if (player1Deck.length === 52) {
+    winner = true
+  } else if(cpuDeck.length === 52){
+    winner = false
+  }
+  return winner;
 }
 
 function renderShuffledDeck() {
@@ -74,7 +85,7 @@ function renderShuffledDeck() {
     return shuffledDeck;
   }
 
-  function buildMasterDeck() {
+  function buildMainDeck() {
     const deck = [];
     // Use nested forEach to generate card objects
     suits.forEach(function(suit) {

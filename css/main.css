@@ -27,6 +27,11 @@ html, * {
 .CPU, .USER1 {
     width: 100px;
     height: 150px;
+} 
+
+.Player1-stats {
+    width: 100px;
+    height: 150px;
 }
 
   button {
