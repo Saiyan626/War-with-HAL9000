@@ -17,11 +17,15 @@ let winner;
 const playerDeckEl = document.querySelector(".Player1-stats")
 const cpuDeckEl = document.querySelector(".HAL9000-stats")
 const msgEl = document.querySelector("#msg")
+const HalScoreEl = document.querySelector(".HAL9000-score")
+const player1ScoreEl = document.querySelector(".Player1-score")
+
 
 /*----- event listeners -----*/
 
 document.querySelector(".USER1").addEventListener("click",cardDraw)
 
+document.querySelector(".HAL9000").addEventListener("click",init)
 
 /*----- functions -----*/
 
@@ -41,11 +45,12 @@ function render() {
   } else if (winner === false){ 
    return msgEl.textContent = "HAL9000-WINS"
   }
-  
   let playerFaceUp = player1Deck[0];
   let cpuFaceUp = cpuDeck[0]; 
   playerDeckEl.innerHTML = `<div class ="card ${playerFaceUp.face}"></div>`
   cpuDeckEl.innerHTML = `<div class ="card ${cpuFaceUp.face}"></div>`
+  HalScoreEl.textContent = `${cpuDeck.length}`
+  player1ScoreEl.textContent = `${player1Deck.length}`
 }
 
 function cardDraw() {
